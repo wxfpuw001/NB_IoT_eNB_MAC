@@ -125,12 +125,12 @@ void eNB_dlsch_ulsch_scheduler(module_id_t module_idP,uint8_t cooperation_flag, 
 
     PHY_vars_eNB_g[module_idP][CC_id]->pusch_stats_bsr[i][(frameP*10)+subframeP]=-63;
     if (i==UE_list->head)
-      VCD_SIGNAL_DUMPER_DUMP_VARIABLE_BY_NAME(VCD_SIGNAL_DUMPER_VARIABLES_UE0_BSR,PHY_vars_eNB_g[module_idP][CC_id]->pusch_stats_bsr[i][(frameP*10)+subframeP]); 
+      VCD_SIGNAL_DUMPER_DUMP_VARIABLE_BY_NAME(VCD_SIGNAL_DUMPER_VARIABLES_UE0_BSR,PHY_vars_eNB_g[module_idP][CC_id]->pusch_stats_bsr[i][(frameP*10)+subframeP]);
     // increment this, it is cleared when we receive an sdu
     eNB_mac_inst[module_idP].UE_list.UE_sched_ctrl[i].ul_inactivity_timer++;
 
     eNB_mac_inst[module_idP].UE_list.UE_sched_ctrl[i].cqi_req_timer++;
-    
+
     if (mac_xface->get_eNB_UE_stats(module_idP, CC_id, rnti)==NULL) {
       //      mac_remove_ue(module_idP, i, frameP, subframeP);
     }
@@ -141,9 +141,9 @@ void eNB_dlsch_ulsch_scheduler(module_id_t module_idP,uint8_t cooperation_flag, 
 	LOG_D(MAC,"UE %d rnti %x: UL Failure timer %d \n",i,rnti,UE_list->UE_sched_ctrl[i].ul_failure_timer);
 	if (UE_list->UE_sched_ctrl[i].ra_pdcch_order_sent==0) {
 	  UE_list->UE_sched_ctrl[i].ra_pdcch_order_sent=1;
-	  
+
 	  // add a format 1A dci for this UE to request an RA procedure (only one UE per subframe)
-	  LOG_D(MAC,"UE %d rnti %x: sending PDCCH order for RAPROC (failure timer %d) \n",i,rnti,UE_list->UE_sched_ctrl[i].ul_failure_timer);	    
+	  LOG_D(MAC,"UE %d rnti %x: sending PDCCH order for RAPROC (failure timer %d) \n",i,rnti,UE_list->UE_sched_ctrl[i].ul_failure_timer);
 	  DLSCH_dci = (void *)UE_list->UE_template[CC_id][i].DLSCH_DCI[0];
 	  *(uint32_t*)DLSCH_dci = 0;
 	  if (PHY_vars_eNB_g[module_idP][CC_id]->lte_frame_parms.frame_type == TDD) {
@@ -214,7 +214,7 @@ void eNB_dlsch_ulsch_scheduler(module_id_t module_idP,uint8_t cooperation_flag, 
 	      break;
 	    }
 	  }
-	  
+
 	  add_ue_spec_dci(DCI_pdu[CC_id],
 			  DLSCH_dci,
 			  rnti,
@@ -225,11 +225,11 @@ void eNB_dlsch_ulsch_scheduler(module_id_t module_idP,uint8_t cooperation_flag, 
 			  0);
 	}
 	else { // ra_pdcch_sent==1
-	  LOG_D(MAC,"UE %d rnti %x: sent PDCCH order for RAPROC waiting (failure timer %d) \n",i,rnti,UE_list->UE_sched_ctrl[i].ul_failure_timer);	    	    
+	  LOG_D(MAC,"UE %d rnti %x: sent PDCCH order for RAPROC waiting (failure timer %d) \n",i,rnti,UE_list->UE_sched_ctrl[i].ul_failure_timer);
 	  if ((UE_list->UE_sched_ctrl[i].ul_failure_timer % 40) == 0)
-	    UE_list->UE_sched_ctrl[i].ra_pdcch_order_sent=0; // resend every 4 frames	      
+	    UE_list->UE_sched_ctrl[i].ra_pdcch_order_sent=0; // resend every 4 frames
 	}
-      
+
 	UE_list->UE_sched_ctrl[i].ul_failure_timer++;
 	// check threshold
 	if (UE_list->UE_sched_ctrl[i].ul_failure_timer > 200) {
@@ -241,7 +241,7 @@ void eNB_dlsch_ulsch_scheduler(module_id_t module_idP,uint8_t cooperation_flag, 
 	}
       }
     } // ul_failure_timer>0
-    
+
     i = next_i;
   }
 
@@ -666,7 +666,7 @@ void eNB_dlsch_ulsch_scheduler(module_id_t module_idP,uint8_t cooperation_flag, 
        i++)
     if (DCI_pdu[CC_id]->dci_alloc[i].rnti==2)
       dummy=1;
-	
+
   if (dummy==1)
     for (i=0;
 	 i<DCI_pdu[CC_id]->Num_common_dci+DCI_pdu[CC_id]->Num_ue_spec_dci;
